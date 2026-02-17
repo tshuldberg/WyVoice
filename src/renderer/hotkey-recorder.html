@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WyVoice Hotkey</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: #111827;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    p {
+      margin: 0 0 12px;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+    #current, #captured {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    #captured {
+      font-weight: 700;
+      color: #93c5fd;
+      min-height: 20px;
+    }
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+    }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    #save {
+      background: #2563eb;
+      color: #fff;
+    }
+    #cancel {
+      background: #374151;
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <h1>Set Dictation Hotkey</h1>
+  <p>Press the key combination you want to use for start/stop dictation.</p>
+  <span id="current">Current: ...</span>
+  <span id="captured">Press keys now</span>
+  <div class="actions">
+    <button id="save" disabled>Save Hotkey</button>
+    <button id="cancel">Cancel</button>
+  </div>
+  <script src="../../dist/renderer/hotkey-recorder.js"></script>
+</body>
+</html>

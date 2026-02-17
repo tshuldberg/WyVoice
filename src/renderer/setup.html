@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>WyVoice Setup</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 24px;
+      -webkit-app-region: drag;
+      user-select: none;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    #status {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 20px;
+      text-align: center;
+      min-height: 18px;
+    }
+
+    progress {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 280px;
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    progress::-webkit-progress-bar {
+      background: #333;
+      border-radius: 3px;
+    }
+
+    progress::-webkit-progress-value {
+      background: linear-gradient(90deg, #4a9eff, #7b68ee);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Indeterminate state */
+    progress:indeterminate::-webkit-progress-bar {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="icon">🎙️</div>
+  <h1>Setting up WyVoice</h1>
+  <p id="status">Checking dependencies…</p>
+  <progress id="bar" max="100" value="0"></progress>
+  <script src="../../dist/renderer/setup.js"></script>
+</body>
+</html>

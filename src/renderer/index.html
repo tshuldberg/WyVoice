@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyVoice</title>
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+  <div id="overlay" class="overlay expanded">
+    <!-- Expanded state -->
+    <div class="expanded-view">
+      <div class="waveform-area">
+        <div id="waveform-bars" class="waveform-bars" aria-hidden="true"></div>
+      </div>
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <svg class="mic-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="5.5" y="1" width="5" height="9" rx="2.5" fill="rgba(255,255,255,0.8)"/>
+            <path d="M3.5 7v1a4.5 4.5 0 009 0V7" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="8" y1="12.5" x2="8" y2="15" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="5.5" y1="15" x2="10.5" y2="15" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          <span class="status" id="status">Listening...</span>
+        </div>
+        <div class="toolbar-center">
+          <span class="transcript" id="transcript"></span>
+        </div>
+        <div class="toolbar-right">
+          <button id="btn-minimize" class="icon-btn" title="Minimize">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 8.5h4.5V13M13 5.5H8.5V1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Minimized state -->
+    <div class="mini-view">
+      <svg class="mini-mic-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <rect x="5.5" y="1" width="5" height="9" rx="2.5" fill="rgba(255,255,255,0.7)"/>
+        <path d="M3.5 7v1a4.5 4.5 0 009 0V7" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <div id="mini-waveform-bars" class="mini-waveform-bars" aria-hidden="true"></div>
+      <button id="btn-expand" class="icon-btn" title="Expand">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 13l4.5-4.5M13 1L8.5 5.5M1 9.5V13h3.5M13 4.5V1H9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div id="wave-debug" class="wave-debug"></div>
+  </div>
+  <script src="../../dist/renderer/overlay.js"></script>
+</body>
+</html>

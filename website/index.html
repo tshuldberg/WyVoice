@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyVoice | Private Dictation for Mac</title>
+    <meta
+      name="description"
+      content="Free, privacy-first dictation for macOS. Double-tap fn, speak naturally, and keep your voice on your Mac."
+    />
+    <meta property="og:title" content="MyVoice | Private Dictation for Mac" />
+    <meta
+      property="og:description"
+      content="Your voice never leaves your Mac. Free, open-source dictation for macOS."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "MyVoice",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "macOS",
+        "isAccessibleForFree": true,
+        "license": "https://opensource.org/license/mit",
+        "url": "https://github.com/tshuldberg/MyVoice",
+        "description": "Free, privacy-first macOS dictation app. Voice is transcribed locally on-device."
+      }
+    </script>
+  </head>
+  <body>
+    <div class="ambient"></div>
+    <main class="shell">
+      <section class="hero card">
+        <p class="eyebrow">Privacy-first macOS dictation</p>
+        <h1>Dictate anywhere on your Mac without sending voice to the cloud.</h1>
+        <p class="subhead">
+          Double-tap <code>fn</code>, speak naturally, and MyVoice types where your cursor is.
+          Local transcription with whisper.cpp. No account. No subscription.
+        </p>
+        <div class="cta-row">
+          <a
+            class="btn btn-primary"
+            href="https://github.com/tshuldberg/MyVoice/releases"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Download for macOS
+          </a>
+          <a
+            class="btn btn-ghost"
+            href="https://github.com/tshuldberg/MyVoice"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Source
+          </a>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Why people switch</h2>
+          <ul>
+            <li>Keep speech local with on-device transcription.</li>
+            <li>Use one hotkey instead of copy/paste workflows.</li>
+            <li>Skip monthly fees for basic voice typing.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>How it works</h2>
+          <ol>
+            <li>Double-tap <code>fn</code>.</li>
+            <li>Speak naturally into your mic.</li>
+            <li>Pause and text appears in the active app.</li>
+          </ol>
+        </article>
+      </section>
+
+      <section class="card donate">
+        <h2>Support development</h2>
+        <p>
+          MyVoice is free, while most advanced dictation tools charge monthly. If this saves you
+          time and feels worth $5, your support goes a long way and is deeply appreciated.
+        </p>
+        <div class="donation-options">
+          <a
+            id="bmac-link"
+            class="donation"
+            href="https://buymeacoffee.com/TreyTre"
+            target="_blank"
+            rel="noreferrer"
+            data-channel="buymeacoffee"
+          >
+            <span class="donation-title">Buy Me a Coffee</span>
+          </a>
+          <a
+            id="venmo-link"
+            class="donation"
+            href="https://venmo.com/u/YOUR_VENMO_HANDLE"
+            target="_blank"
+            rel="noreferrer"
+            data-channel="venmo"
+          >
+            <span class="donation-title">Venmo</span>
+          </a>
+        </div>
+        <p id="venmo-note" class="note">
+          Replace <code>YOUR_VENMO_HANDLE</code> in <code>website/index.html</code> before launch.
+        </p>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        const donationLinks = document.querySelectorAll('[data-channel]');
+        for (const link of donationLinks) {
+          link.addEventListener('click', () => {
+            const channel = link.getAttribute('data-channel') || 'unknown';
+            console.log('[MyVoice Marketing] donation_cta_clicked', { channel });
+          });
+        }
+
+        const venmoLink = document.getElementById('venmo-link');
+        const venmoNote = document.getElementById('venmo-note');
+        if (venmoLink && venmoLink.href.includes('YOUR_VENMO_HANDLE') && venmoNote) {
+          venmoNote.classList.add('visible');
+        }
+      })();
+    </script>
+  </body>
+</html>

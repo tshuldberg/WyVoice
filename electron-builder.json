@@ -1,0 +1,19 @@
+{
+  "appId": "com.trey.wyvoice",
+  "productName": "WyVoice",
+  "win": {
+    "target": ["nsis"],
+    "signAndEditExecutable": false,
+    "artifactName": "WyVoice-${version}-Setup.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowToChangeInstallationDirectory": true
+  },
+  "files": [
+    "dist/**/*",
+    "src/renderer/**/*",
+    "assets/**/*"
+  ]
+}

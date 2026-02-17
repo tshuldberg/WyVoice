@@ -1,0 +1,46 @@
+node_modules/
+dist/
+build/
+*.node
+.DS_Store
+
+# Packaging artifacts
+*.dmg
+*.zip
+*.tar.gz
+*.blockmap
+release/
+out/
+
+# macOS resource forks
+._*
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.*
+.envrc
+*.pem
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.cer
+.claude/settings.local.json
+.claude/skills/marketing
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp files
+*.tmp
+
+# Worktree state
+.cmux/
