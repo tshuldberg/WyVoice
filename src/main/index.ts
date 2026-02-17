@@ -4,6 +4,7 @@ import { createTray } from './tray';
 import { toggleDictation, cancelDictation, getDictationState, initDictation } from './dictation-controller';
 import { ensureWhisperReady } from './dependency-setup';
 import { initHotkey, teardownHotkey } from './hotkey-manager';
+import { ensureAutoStartDefault } from './startup-settings';
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
@@ -11,6 +12,8 @@ if (!gotTheLock) {
 }
 
 app.whenReady().then(async () => {
+  ensureAutoStartDefault();
+
   session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
     callback(permission === 'media');
   });
