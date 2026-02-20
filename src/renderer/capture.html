@@ -6,6 +6,31 @@
   <title>WyVoice Capture</title>
 </head>
 <body>
+  <script>
+    // CommonJS shim for browser-loaded TypeScript output
+    (function() {
+      var registry = {};
+      var currentExports = {};
+      var currentModule = { exports: currentExports };
+      window.exports = currentExports;
+      window.module = currentModule;
+      window.require = function(path) {
+        if (registry[path]) return registry[path];
+        throw new Error('Module not found: ' + path);
+      };
+      window.__registerModule = function(id) {
+        registry[id] = currentModule.exports;
+        currentExports = {};
+        currentModule = { exports: currentExports };
+        window.exports = currentExports;
+        window.module = currentModule;
+      };
+    })();
+  </script>
+  <script src="../../dist/shared/types.js"></script>
+  <script>__registerModule('../shared/types');</script>
+  <script src="../../dist/renderer/ipc.js"></script>
+  <script>__registerModule('./ipc');</script>
   <script src="../../dist/renderer/capture.js"></script>
 </body>
 </html>

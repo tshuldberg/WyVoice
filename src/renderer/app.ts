@@ -6,6 +6,7 @@ const IPC_CHANNELS = {
   APP_SET_AUTO_STOP_PAUSE: 'app:set-auto-stop-pause',
   APP_SET_WAVEFORM_SENSITIVITY: 'app:set-waveform-sensitivity',
   APP_SET_SILENCE_THRESHOLD: 'app:set-silence-threshold',
+  APP_SET_AUDIO_DEVICE: 'app:set-audio-device',
   APP_SET_WAVEFORM_DEBUG: 'app:set-waveform-debug',
   APP_GET_TODAY_LOG: 'app:get-today-log',
   APP_GET_LOG_BY_DATE: 'app:get-log-by-date',
@@ -46,6 +47,7 @@ interface AppStatePayload {
   availableLogDates: string[];
   autoStopOptionsMs: number[];
   silenceThresholdOptions: number[];
+  audioDeviceId: string;
 }
 
 interface MyVoiceIpcBridge {
@@ -74,6 +76,7 @@ const formattingModeEl = required<HTMLSelectElement>('formatting-mode');
 const aiEnhancementEl = required<HTMLInputElement>('ai-enhancement');
 const autoStopEl = required<HTMLSelectElement>('auto-stop');
 const silenceThresholdEl = required<HTMLSelectElement>('silence-threshold');
+const audioDeviceEl = required<HTMLSelectElement>('audio-device');
 const waveformSensitivityEl = required<HTMLSelectElement>('waveform-sensitivity');
 const waveformDebugEl = required<HTMLInputElement>('waveform-debug');
 const quitBtn = required<HTMLButtonElement>('quit-btn');
@@ -187,6 +190,35 @@ async function exportVisibleLog(format: 'txt' | 'json'): Promise<void> {
   });
 }
 
+async function populateAudioDevices(selectedDeviceId: string): Promise<void> {
+  try {
+    // Request mic permission first so enumerateDevices returns labels
+    await navigator.mediaDevices.getUserMedia({ audio: true }).then((s) => {
+      s.getTracks().forEach((t) => t.stop());
+    }).catch(() => {});
+
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const audioInputs = devices.filter((d) => d.kind === 'audioinput');
+
+    // Keep the default option, clear the rest
+    while (audioDeviceEl.options.length > 1) {
+      audioDeviceEl.remove(1);
+    }
+
+    for (const device of audioInputs) {
+      if (device.deviceId === 'default' || device.deviceId === 'communications') continue;
+      const option = document.createElement('option');
+      option.value = device.deviceId;
+      option.textContent = device.label || `Microphone (${device.deviceId.slice(0, 8)})`;
+      audioDeviceEl.appendChild(option);
+    }
+
+    audioDeviceEl.value = selectedDeviceId || '';
+  } catch (error) {
+    console.error('[WyVoice] Failed to enumerate audio devices:', error);
+  }
+}
+
 function renderSettings(payload: AppStatePayload): void {
   formattingModeEl.value = payload.formatting.mode;
   aiEnhancementEl.checked = payload.formatting.aiEnhancementEnabled;
@@ -225,6 +257,7 @@ function renderSettings(payload: AppStatePayload): void {
 function render(payload: AppStatePayload): void {
   state = payload;
   renderSettings(payload);
+  populateAudioDevices(payload.audioDeviceId);
   applyAvailableDates(payload.availableLogDates);
   activeLogDate = payload.todayDateKey;
   activeLogEntries = payload.todayLog;
@@ -289,6 +322,14 @@ silenceThresholdEl.addEventListener('change', async () => {
   const next = await ipc().invoke(
     IPC_CHANNELS.APP_SET_SILENCE_THRESHOLD,
     Number(silenceThresholdEl.value)
+  ) as AppStatePayload;
+  render(next);
+});
+
+audioDeviceEl.addEventListener('change', async () => {
+  const next = await ipc().invoke(
+    IPC_CHANNELS.APP_SET_AUDIO_DEVICE,
+    audioDeviceEl.value
   ) as AppStatePayload;
   render(next);
 });

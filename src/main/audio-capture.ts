@@ -3,6 +3,7 @@ import { mkdtempSync, writeFileSync } from 'fs';
 import os from 'os';
 import path from 'path';
 import { IPC_CHANNELS } from '../shared/types';
+import { getAudioDeviceSettings } from './audio-device-settings';
 
 let captureWindow: BrowserWindow | null = null;
 let listenersRegistered = false;
@@ -86,6 +87,7 @@ function ensureCaptureWindow(): BrowserWindow {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: false,
       backgroundThrottling: false,
     },
   });
@@ -128,6 +130,8 @@ export async function startAudioCapture(
     });
   }
 
+  const deviceSettings = getAudioDeviceSettings();
+  win.webContents.send(IPC_CHANNELS.AUDIO_CAPTURE_SET_DEVICE, deviceSettings.deviceId);
   win.webContents.send(IPC_CHANNELS.AUDIO_CAPTURE_START);
   await new Promise<void>((resolve) => {
     readyResolver = resolve;

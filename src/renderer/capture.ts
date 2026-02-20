@@ -10,6 +10,7 @@ let zeroGain: GainNode | null = null;
 let levelTimer: ReturnType<typeof setInterval> | null = null;
 let recording = false;
 let chunks: Float32Array[] = [];
+let selectedDeviceId = '';
 
 function stopTracks(): void {
   stream?.getTracks().forEach((track) => track.stop());
@@ -105,13 +106,15 @@ async function startCapture(): Promise<void> {
   if (recording) return;
 
   try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true,
-      },
-    });
+    const audioConstraints: MediaTrackConstraints = {
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true,
+    };
+    if (selectedDeviceId) {
+      audioConstraints.deviceId = { exact: selectedDeviceId };
+    }
+    stream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
 
     audioContext = new AudioContext();
     sourceNode = audioContext.createMediaStreamSource(stream);
@@ -179,4 +182,8 @@ onIpc(IPC_CHANNELS.AUDIO_CAPTURE_STOP, () => {
 
 onIpc(IPC_CHANNELS.AUDIO_CAPTURE_CANCEL, () => {
   stopCapture(false);
+});
+
+onIpc(IPC_CHANNELS.AUDIO_CAPTURE_SET_DEVICE, (payload: unknown) => {
+  selectedDeviceId = typeof payload === 'string' ? payload : '';
 });

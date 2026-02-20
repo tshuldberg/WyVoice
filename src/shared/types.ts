@@ -41,6 +41,9 @@ export const IPC_CHANNELS = {
   APP_EXPORT_LOG: 'app:export-log',
   APP_LOG_UPDATED: 'app:log-updated',
   APP_NAVIGATE: 'app:navigate',
+  APP_LIST_AUDIO_DEVICES: 'app:list-audio-devices',
+  APP_SET_AUDIO_DEVICE: 'app:set-audio-device',
+  AUDIO_CAPTURE_SET_DEVICE: 'audio-capture:set-device',
 } as const;
 
 // Dictation state machine

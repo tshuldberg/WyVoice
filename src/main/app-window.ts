@@ -31,6 +31,7 @@ import {
   type RecordingLogEntry,
 } from './recording-log';
 import { getCurrentHotkey } from './hotkey-manager';
+import { getAudioDeviceSettings, setAudioDeviceId } from './audio-device-settings';
 
 export type AppSection = 'settings' | 'logs';
 
@@ -44,6 +45,7 @@ export interface AppStatePayload {
   availableLogDates: string[];
   autoStopOptionsMs: typeof AUTO_STOP_DELAY_OPTIONS_MS;
   silenceThresholdOptions: typeof SILENCE_THRESHOLD_OPTIONS;
+  audioDeviceId: string;
 }
 
 interface ExportLogPayload {
@@ -73,6 +75,7 @@ function getAppState(): AppStatePayload {
     availableLogDates: listRecordingLogDates(),
     autoStopOptionsMs: AUTO_STOP_DELAY_OPTIONS_MS,
     silenceThresholdOptions: SILENCE_THRESHOLD_OPTIONS,
+    audioDeviceId: getAudioDeviceSettings().deviceId,
   };
 }
 
@@ -150,6 +153,10 @@ function registerHandlers(): void {
     broadcastWaveformConfig();
     return getAppState();
   });
+  ipcMain.handle(IPC_CHANNELS.APP_SET_AUDIO_DEVICE, (_event, deviceId: string) => {
+    setAudioDeviceId(typeof deviceId === 'string' ? deviceId : '');
+    return getAppState();
+  });
 
   handlersRegistered = true;
 }
@@ -172,6 +179,7 @@ export function createAppWindow(): BrowserWindow {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: false,
     },
   });
 
