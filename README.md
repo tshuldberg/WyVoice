@@ -9,6 +9,7 @@ Private dictation for Windows. Speak naturally, transcribe locally with `whisper
 - Auto-stop on silence
 - Clipboard-safe paste into any focused app
 - Fully customizable global dictation hotkey
+- Visible settings window (taskbar app window)
 - Formatting controls and waveform sensitivity controls
 
 ## Requirements
@@ -42,3 +43,4 @@ This produces a Windows installer via `electron-builder`.
   `winget install --id ggerganov.whisper.cpp --exact`
 - Hotkey changes are persisted in:
   `%APPDATA%\\WyVoice\\hotkey-settings.json`
+- Default hotkey is `Ctrl+Space`. `Ctrl+Ctrl` (double-tap Ctrl) is available in Settings.

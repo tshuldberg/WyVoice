@@ -1,6 +1,6 @@
 // Hotkey
 export const FN_DOUBLE_TAP_THRESHOLD_MS = 400;
-export const DEFAULT_WINDOWS_HOTKEY = 'Control+Shift+Space';
+export const DEFAULT_WINDOWS_HOTKEY = 'Control+Space';
 
 // Recording
 export const SILENCE_TIMEOUT_MS = 3000;

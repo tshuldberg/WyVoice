@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WyVoice Settings</title>
+  <link rel="stylesheet" href="./settings.css">
+</head>
+<body>
+  <main class="shell">
+    <h1>WyVoice Settings</h1>
+
+    <section class="card">
+      <h2>Hotkey</h2>
+      <p class="hint">Default is <code>Ctrl+Space</code>. You can also use <code>Ctrl+Ctrl</code> or combos like <code>Ctrl+Alt+D</code>.</p>
+      <div class="row">
+        <span id="hotkey-current">Current: ...</span>
+      </div>
+      <div class="row">
+        <button id="hotkey-capture">Capture New Hotkey</button>
+        <button id="hotkey-use-ctrl-double">Use Ctrl+Ctrl</button>
+        <button id="hotkey-save" disabled>Save Hotkey</button>
+      </div>
+      <p id="hotkey-captured" class="hint">Press keys after clicking Capture.</p>
+      <p id="hotkey-error" class="error" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>Auto-Stop Delay</h2>
+      <p class="hint">How long to wait in silence before dictation stops automatically.</p>
+      <div class="row">
+        <label for="delay-select">Delay:</label>
+        <select id="delay-select">
+          <option value="1000">1.0s</option>
+          <option value="1500">1.5s</option>
+          <option value="2000">2.0s</option>
+          <option value="3000">3.0s (default)</option>
+          <option value="5000">5.0s</option>
+          <option value="8000">8.0s</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Silence Trigger Threshold</h2>
+      <p class="hint">Raise this if ambient room noise keeps dictation from stopping.</p>
+      <div class="row">
+        <label for="threshold-select">Threshold:</label>
+        <select id="threshold-select">
+          <option value="0.01">Very sensitive (0.01)</option>
+          <option value="0.02">Balanced (0.02)</option>
+          <option value="0.03">Less sensitive (0.03)</option>
+          <option value="0.04">Room noise resistant (0.04)</option>
+          <option value="0.06">High noise resistant (0.06)</option>
+          <option value="0.08">Very high noise resistant (0.08)</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="actions">
+      <button id="quit" class="danger">Exit WyVoice</button>
+    </section>
+  </main>
+  <script src="../../dist/renderer/settings.js"></script>
+</body>
+</html>

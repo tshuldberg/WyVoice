@@ -117,6 +117,7 @@ try {
     createFallbackText(overlay, 'transcript');
   const btnMinimize = document.getElementById('btn-minimize') as HTMLButtonElement | null;
   const btnExpand = document.getElementById('btn-expand') as HTMLButtonElement | null;
+  const btnClose = document.getElementById('btn-close') as HTMLButtonElement | null;
   const mainBarsEl = getOrCreateContainer('waveform-bars', 'waveform-bars', waveformArea);
   const miniBarsEl = getOrCreateContainer('mini-waveform-bars', 'mini-waveform-bars', miniView);
   const debugEl =
@@ -323,6 +324,12 @@ try {
   }
   if (btnExpand) {
     btnExpand.addEventListener('click', () => setOverlayMode('expanded'));
+  }
+  if (btnClose) {
+    btnClose.addEventListener('click', () => {
+      sendIpc(IPC_CHANNELS.DICTATION_CANCEL_REQUEST);
+      sendIpc(IPC_CHANNELS.OVERLAY_DISMISSED);
+    });
   }
 
   onIpc(IPC_CHANNELS.DICTATION_START, () => {

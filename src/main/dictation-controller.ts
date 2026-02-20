@@ -8,6 +8,8 @@ import type { WhisperPaths } from './dependency-setup';
 import { getFormattingSettings } from './formatting-settings';
 import { formatTranscript } from './transcript-formatter';
 import { getDictationSettings, formatAutoStopDelayLabel } from './dictation-settings';
+import { appendRecordingLog } from './recording-log';
+import { broadcastLogUpdated } from './app-window';
 
 let state: DictationState = 'idle';
 let silenceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -15,7 +17,6 @@ let lastAudioAboveThreshold = 0;
 let isFinishing = false;
 let permissionsChecked = false;
 let audioLevelCount = 0;
-const SILENCE_AUDIO_THRESHOLD = 0.02;
 
 let whisperCli: string | null = null;
 let whisperModel: string | null = null;
@@ -80,17 +81,19 @@ async function startDictation(): Promise<void> {
   console.log(
     `[WyVoice] Auto-stop pause: ${formatAutoStopDelayLabel(getDictationSettings().autoStopPauseMs)}`
   );
+  console.log(`[WyVoice] Silence threshold: ${getDictationSettings().silenceThreshold.toFixed(2)}`);
 
   native.recordStart(
     (level: number) => {
+      const silenceThreshold = getDictationSettings().silenceThreshold;
       audioLevelCount++;
-      if (audioLevelCount <= 5 || (level > SILENCE_AUDIO_THRESHOLD && audioLevelCount % 10 === 0)) {
+      if (audioLevelCount <= 5 || (level > silenceThreshold && audioLevelCount % 10 === 0)) {
         console.log(`[WyVoice] Audio level #${audioLevelCount}: ${level.toFixed(4)}`);
       }
 
       sendToOverlay(IPC_CHANNELS.DICTATION_AUDIO_LEVEL, level);
 
-      if (level > SILENCE_AUDIO_THRESHOLD) {
+      if (level > silenceThreshold) {
         lastAudioAboveThreshold = Date.now();
       }
 
@@ -176,6 +179,9 @@ function finishDictation(transcript: string): void {
 
   clearSilenceTimer();
   sendToOverlay(IPC_CHANNELS.DICTATION_STOP, transcript);
+
+  appendRecordingLog(transcript);
+  broadcastLogUpdated();
 
   const originalClipboard = clipboard.readText();
   clipboard.writeText(transcript);

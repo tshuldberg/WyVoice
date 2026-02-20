@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WyVoice</title>
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --panel: #ffffff;
+      --text: #10243f;
+      --muted: #4f647e;
+      --line: #d8e0ec;
+      --accent: #1f77d0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: "Segoe UI", "SF Pro Text", sans-serif;
+    }
+
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      margin: 0 0 20px;
+      color: var(--muted);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    select,
+    input[type="checkbox"] {
+      cursor: pointer;
+    }
+
+    select {
+      width: 100%;
+      max-width: 420px;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .toggle-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      color: var(--text);
+    }
+
+    #log-date {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    #log-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    #log-list li {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fbfdff;
+    }
+
+    .entry-time {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .hidden { display: none; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      min-width: 220px;
+      gap: 6px;
+    }
+
+    input[type="date"],
+    input[type="search"] {
+      width: 100%;
+      max-width: 420px;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-danger {
+      border-color: #e74c3c;
+      color: #e74c3c;
+    }
+
+    .hint {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .settings-row {
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <h1>WyVoice</h1>
+    <p class="sub">Desktop settings and recording history</p>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-settings" type="button">Settings</button>
+      <button class="tab-btn" id="tab-logs" type="button">Today's Log</button>
+    </div>
+
+    <section id="view-settings">
+      <div class="card">
+        <h2>Text Formatting</h2>
+        <label for="formatting-mode">Formatting mode</label>
+        <select id="formatting-mode">
+          <option value="off">Off (verbatim)</option>
+          <option value="basic">Basic (default)</option>
+          <option value="structured">Structured</option>
+        </select>
+        <div class="toggle-row">
+          <input id="ai-enhancement" type="checkbox">
+          <label for="ai-enhancement">Enable AI Enhancement (optional)</label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Dictation</h2>
+        <label for="auto-stop">Auto-stop pause</label>
+        <select id="auto-stop"></select>
+        <div class="settings-row">
+          <label for="silence-threshold">Silence trigger threshold</label>
+          <select id="silence-threshold"></select>
+          <p class="hint">Raise this if ambient room noise keeps dictation from stopping.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Waveform</h2>
+        <label for="waveform-sensitivity">Sensitivity</label>
+        <select id="waveform-sensitivity">
+          <option value="low">Low</option>
+          <option value="balanced">Balanced</option>
+          <option value="high">High</option>
+        </select>
+        <div class="toggle-row">
+          <input id="waveform-debug" type="checkbox">
+          <label for="waveform-debug">Show waveform debug overlay</label>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="hint">Hotkey and other quick settings are available from the system tray menu.</p>
+        <button id="quit-btn" class="btn btn-danger" type="button">Exit WyVoice</button>
+      </div>
+    </section>
+
+    <section id="view-logs" class="hidden">
+      <div class="card">
+        <h2>Recording History</h2>
+        <div class="toolbar">
+          <div class="field">
+            <label for="log-date-picker">Date</label>
+            <input id="log-date-picker" type="date">
+          </div>
+          <div class="field">
+            <label for="log-search">Search transcript</label>
+            <input id="log-search" type="search" placeholder="Search text...">
+          </div>
+          <button id="export-txt" class="btn" type="button">Export TXT</button>
+          <button id="export-json" class="btn" type="button">Export JSON</button>
+        </div>
+        <p id="log-date"></p>
+        <ul id="log-list"></ul>
+      </div>
+    </section>
+  </main>
+  <script src="../../dist/renderer/app.js"></script>
+</body>
+</html>

@@ -19,6 +19,7 @@ import {
 } from './dictation-settings';
 import { getCurrentHotkey, openHotkeyRecorder, updateHotkey } from './hotkey-manager';
 import { DEFAULT_WINDOWS_HOTKEY } from '../shared/constants';
+import { showAppWindow } from './app-window';
 
 let tray: Tray | null = null;
 let isRecording = false;
@@ -93,6 +94,14 @@ function updateTrayMenu(): void {
     {
       label: 'Change Hotkey...',
       click: () => openHotkeyRecorder(),
+    },
+    {
+      label: 'Open WyVoice',
+      click: () => showAppWindow('settings'),
+    },
+    {
+      label: "Today's Log",
+      click: () => showAppWindow('logs'),
     },
     {
       label: `Reset Hotkey (${DEFAULT_WINDOWS_HOTKEY})`,

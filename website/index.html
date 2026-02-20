@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyVoice | Private Dictation for Mac</title>
+    <title>WyVoice | Private Dictation for Windows</title>
     <meta
       name="description"
-      content="Free, privacy-first dictation for macOS. Double-tap fn, speak naturally, and keep your voice on your Mac."
+      content="Free, privacy-first dictation for Windows. Press Ctrl+Space, speak naturally, and keep your voice local."
     />
-    <meta property="og:title" content="MyVoice | Private Dictation for Mac" />
+    <meta property="og:title" content="WyVoice | Private Dictation for Windows" />
     <meta
       property="og:description"
-      content="Your voice never leaves your Mac. Free, open-source dictation for macOS."
+      content="Your voice never leaves your PC. Free, open-source dictation for Windows."
     />
     <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,13 +25,13 @@
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "MyVoice",
+        "name": "WyVoice",
         "applicationCategory": "ProductivityApplication",
-        "operatingSystem": "macOS",
+        "operatingSystem": "Windows 10/11",
         "isAccessibleForFree": true,
         "license": "https://opensource.org/license/mit",
-        "url": "https://github.com/tshuldberg/MyVoice",
-        "description": "Free, privacy-first macOS dictation app. Voice is transcribed locally on-device."
+        "url": "https://github.com/tshuldberg/WyVoice",
+        "description": "Free, privacy-first Windows dictation app. Voice is transcribed locally on-device."
       }
     </script>
   </head>
@@ -39,24 +39,24 @@
     <div class="ambient"></div>
     <main class="shell">
       <section class="hero card">
-        <p class="eyebrow">Privacy-first macOS dictation</p>
-        <h1>Dictate anywhere on your Mac without sending voice to the cloud.</h1>
+        <p class="eyebrow">Privacy-first Windows dictation</p>
+        <h1>Dictate anywhere on your PC without sending voice to the cloud.</h1>
         <p class="subhead">
-          Double-tap <code>fn</code>, speak naturally, and MyVoice types where your cursor is.
+          Press <code>Ctrl+Space</code>, speak naturally, and WyVoice types where your cursor is.
           Local transcription with whisper.cpp. No account. No subscription.
         </p>
         <div class="cta-row">
           <a
             class="btn btn-primary"
-            href="https://github.com/tshuldberg/MyVoice/releases"
+            href="https://github.com/tshuldberg/WyVoice/releases"
             target="_blank"
             rel="noreferrer"
           >
-            Download for macOS
+            Download for Windows
           </a>
           <a
             class="btn btn-ghost"
-            href="https://github.com/tshuldberg/MyVoice"
+            href="https://github.com/tshuldberg/WyVoice"
             target="_blank"
             rel="noreferrer"
           >
@@ -77,7 +77,7 @@
         <article class="card">
           <h2>How it works</h2>
           <ol>
-            <li>Double-tap <code>fn</code>.</li>
+            <li>Press <code>Ctrl+Space</code> (or set <code>Ctrl+Ctrl</code> in Settings).</li>
             <li>Speak naturally into your mic.</li>
             <li>Pause and text appears in the active app.</li>
           </ol>
@@ -87,7 +87,7 @@
       <section class="card donate">
         <h2>Support development</h2>
         <p>
-          MyVoice is free, while most advanced dictation tools charge monthly. If this saves you
+          WyVoice is free, while most advanced dictation tools charge monthly. If this saves you
           time and feels worth $5, your support goes a long way and is deeply appreciated.
         </p>
         <div class="donation-options">
@@ -124,7 +124,7 @@
         for (const link of donationLinks) {
           link.addEventListener('click', () => {
             const channel = link.getAttribute('data-channel') || 'unknown';
-            console.log('[MyVoice Marketing] donation_cta_clicked', { channel });
+            console.log('[WyVoice Marketing] donation_cta_clicked', { channel });
           });
         }
 

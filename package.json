@@ -28,6 +28,7 @@
     "electron-builder": "^26.7.0",
     "typescript": "^5.9.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "node-global-key-listener": "^0.3.0"
+  }
 }
-

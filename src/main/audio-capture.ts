@@ -9,6 +9,8 @@ let listenersRegistered = false;
 let onAudioLevel: ((level: number) => void) | null = null;
 let onError: ((message: string) => void) | null = null;
 let stopResolver: ((wavPath: string | null) => void) | null = null;
+let readyResolver: (() => void) | null = null;
+let captureReady = false;
 
 function registerListeners(): void {
   if (listenersRegistered) return;
@@ -19,9 +21,23 @@ function registerListeners(): void {
     onAudioLevel?.(level);
   });
 
+  ipcMain.on(IPC_CHANNELS.AUDIO_CAPTURE_READY, () => {
+    captureReady = true;
+    if (readyResolver) {
+      const resolve = readyResolver;
+      readyResolver = null;
+      resolve();
+    }
+  });
+
   ipcMain.on(IPC_CHANNELS.AUDIO_CAPTURE_ERROR, (_event, payload: unknown) => {
     const message = typeof payload === 'string' ? payload : 'Unknown capture error';
     onError?.(message);
+    if (readyResolver) {
+      const resolve = readyResolver;
+      readyResolver = null;
+      resolve();
+    }
     if (stopResolver) {
       const resolve = stopResolver;
       stopResolver = null;
@@ -76,8 +92,21 @@ function ensureCaptureWindow(): BrowserWindow {
 
   captureWindow.loadFile(path.join(__dirname, '../../src/renderer/capture.html'));
 
+  captureWindow.webContents.on('did-fail-load', (_event, errorCode, errorDescription) => {
+    onError?.(`Capture window failed to load (${errorCode}): ${errorDescription}`);
+  });
+  captureWindow.webContents.on('render-process-gone', (_event, details) => {
+    onError?.(`Capture renderer exited: ${details.reason}`);
+  });
+
   captureWindow.on('closed', () => {
     captureWindow = null;
+    captureReady = false;
+    if (readyResolver) {
+      const resolve = readyResolver;
+      readyResolver = null;
+      resolve();
+    }
   });
 
   return captureWindow;
@@ -90,6 +119,7 @@ export async function startAudioCapture(
   registerListeners();
   onAudioLevel = onLevel;
   onError = onCaptureError;
+  captureReady = false;
 
   const win = ensureCaptureWindow();
   if (win.webContents.isLoadingMainFrame()) {
@@ -99,6 +129,19 @@ export async function startAudioCapture(
   }
 
   win.webContents.send(IPC_CHANNELS.AUDIO_CAPTURE_START);
+  await new Promise<void>((resolve) => {
+    readyResolver = resolve;
+    setTimeout(() => {
+      if (!captureReady) {
+        onError?.('Audio capture startup timed out.');
+      }
+      if (readyResolver) {
+        const readyResolve = readyResolver;
+        readyResolver = null;
+        readyResolve();
+      }
+    }, 2500);
+  });
 }
 
 export async function stopAudioCapture(): Promise<string | null> {
@@ -108,6 +151,13 @@ export async function stopAudioCapture(): Promise<string | null> {
   return new Promise<string | null>((resolve) => {
     stopResolver = resolve;
     captureWindow?.webContents.send(IPC_CHANNELS.AUDIO_CAPTURE_STOP);
+    setTimeout(() => {
+      if (!stopResolver) return;
+      onError?.('Audio capture stop timed out.');
+      const stopResolve = stopResolver;
+      stopResolver = null;
+      stopResolve(null);
+    }, 3000);
   });
 }
 

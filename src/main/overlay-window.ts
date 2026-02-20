@@ -71,7 +71,7 @@ export function createOverlayWindow(): BrowserWindow {
     resizable: false,
     hasShadow: false,
     skipTaskbar: true,
-    focusable: false,
+    focusable: true,
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
