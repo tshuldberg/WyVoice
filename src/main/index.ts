@@ -1,7 +1,7 @@
 import { app, globalShortcut, ipcMain, session } from 'electron';
 import fs from 'fs';
 import path from 'path';
-import { createOverlayWindow } from './overlay-window';
+import { createOverlayWindow, hideOverlay } from './overlay-window';
 import { createTray, refreshTrayMenu } from './tray';
 import { toggleDictation, cancelDictation, getDictationState, initDictation } from './dictation-controller';
 import { ensureWhisperReady } from './dependency-setup';
@@ -34,6 +34,7 @@ app.whenReady().then(async () => {
 
   createTray();
   createOverlayWindow();
+  hideOverlay(); // Guarantee overlay starts hidden (e.g. after crash/reboot mid-recording)
   showAppWindow();
   initDictation(whisperPaths);
 

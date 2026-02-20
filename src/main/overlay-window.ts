@@ -179,6 +179,7 @@ export function createOverlayWindow(): BrowserWindow {
   overlayWindow.webContents.on('render-process-gone', (_event, details) => {
     overlayReady = false;
     console.error(`[MyVoice] Overlay render process exited: ${details.reason}`);
+    hideOverlay();
   });
 
   overlayWindow.on('closed', () => {

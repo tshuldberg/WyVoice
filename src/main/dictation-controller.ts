@@ -201,9 +201,7 @@ function resetState(): void {
   setRecordingState(false);
   clearSilenceTimer();
 
-  setTimeout(() => {
-    hideOverlay();
-  }, 250);
+  hideOverlay();
 }
 
 function startSilenceTimer(): void {
