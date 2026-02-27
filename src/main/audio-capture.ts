@@ -153,15 +153,19 @@ export async function stopAudioCapture(): Promise<string | null> {
   if (stopResolver) return null;
 
   return new Promise<string | null>((resolve) => {
-    stopResolver = resolve;
+    const timeout = setTimeout(() => {
+      if (stopResolver) {
+        stopResolver = null;
+        console.error('[WyVoice] Audio capture stop timed out after 5s');
+        resolve(null);
+      }
+    }, 5000);
+
+    stopResolver = (wavPath) => {
+      clearTimeout(timeout);
+      resolve(wavPath);
+    };
     captureWindow?.webContents.send(IPC_CHANNELS.AUDIO_CAPTURE_STOP);
-    setTimeout(() => {
-      if (!stopResolver) return;
-      onError?.('Audio capture stop timed out.');
-      const stopResolve = stopResolver;
-      stopResolver = null;
-      stopResolve(null);
-    }, 3000);
   });
 }
 
